@@ -38,7 +38,9 @@ class wareHouse {
   protected:
     hashNode* medicStorage[MAX_HASH_TABLE_SIZE];
 
-    void _insert(medicInfo info) {
+    bool _insert(medicInfo info) {
+      if (_find(info.medicID) != NULL) return false;
+
       int idx = hashFunc(info.medicID);
       hashNode* node = new hashNode;
       node->data = info;
@@ -51,6 +53,7 @@ class wareHouse {
         node->next = medicStorage[idx];
         medicStorage[idx] = node;
       }
+    return true;
     }
 
     hashNode* _find(std::string ID) {
@@ -93,8 +96,8 @@ class wareHouse {
         cout << "Nhap gia thuoc: ";
         cin >> change.price;
 
-        _insert(change);
-    }
+        cout << (_insert(change) ? "Nhap thuoc co ID " + change.medicID + " vao CSDL thanh cong.\n" :  "Nhap thuoc co ID " + change.medicID + " vao CSDL khong thanh cong.\n");
+      }
     
 
     void insertMedicFromFile() {
@@ -113,7 +116,7 @@ class wareHouse {
         medicInfo change;
         int count = 0;
         while (file >> change.medicID >> change.medicName >> change.price) {
-          _insert(change);
+          cout << (_insert(change) ? "Nhap thuoc co ID " + change.medicID + " vao CSDL thanh cong.\n" :  "Nhap thuoc co ID " + change.medicID + " vao CSDL khong thanh cong.\n");
           count++;
         }
         file.close();
@@ -152,7 +155,7 @@ class wareHouse {
       delNode = _find(ID);
 
       if (delNode == NULL) {
-        cout << "Khong co thuoc co ID: " << ID << " trong kho thuoc!!\n";
+        cout << "[LOI] Khong co thuoc co ID " << ID << " trong kho thuoc!!\n";
         return false;
       }
 
@@ -185,32 +188,23 @@ class wareHouse {
         _print(out);
         return;
       }
-      cout << "Khong co thuoc co ID: " << ID << " trong kho thuoc!!\n";
+      cout << "[LOI] Khong co thuoc co ID " << ID << " trong kho thuoc!!\n";
       return;
     }
 
     void updateMedic(std::string ID) {
-      hashNode* change = _find(ID);
-      
-      if (change == NULL) {
-        cout << "Khong co thuoc co ID: " << ID << " trong kho thuoc!!\n";
+      if (_find(ID) == NULL) {
+        cout << "[LOI] Khong co thuoc co ID " << ID << " trong kho thuoc!!\n";
         return;
       }
-      
+
       cout << "--- Thong tin thuoc truoc khi thay doi ---" << endl;
       cout << "==========================================" << endl;
-      _print(change);
+      findMedic(ID);
       cout << "========================================" << endl;
+      delMedic(ID);
 
-      cout << "Nhap ID thuoc: ";
-      cin >> change->data.medicID;
-
-      cout << "Nhap ten thuoc: ";
-      cin >> change->data.medicName;
-        
-      cout << "Nhap gia thuoc: ";
-      cin >> change->data.price;
-
+      insertMedic();
     }
 
     void printTable() {
