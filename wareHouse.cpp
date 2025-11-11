@@ -15,6 +15,7 @@ struct medicInfo {
   std::string medicID;
   std::string medicName;
   double price;
+  std::string unit;
 };
 
 struct hashNode {
@@ -56,28 +57,30 @@ class wareHouse {
     return true;
     }
 
-    hashNode* _find(std::string ID) {
-      int idx = hashFunc(ID);
-
-      if (medicStorage[idx] == NULL) return NULL;
-
-      hashNode* tmp;
-      tmp = medicStorage[idx];
-      while (tmp != NULL) {
-        if (tmp->data.medicID == ID) return tmp;
-        tmp = tmp->next;
-      }
-      return NULL;
-    }
-
+    
     void _print(hashNode* value) {
       cout << "ID thuoc: " << value->data.medicID << endl;
       cout << "Ten thuoc: " << value->data.medicName << endl;
       cout << "Gia thuoc: " << value->data.price << endl;
+      cout << "Don vi: " << value->data.unit << endl;
       return;
     }
+    
+    public:
+      hashNode* _find(std::string ID) {
+        int idx = hashFunc(ID);
 
-  public:
+        if (medicStorage[idx] == NULL) return NULL;
+
+        hashNode* tmp;
+        tmp = medicStorage[idx];
+        while (tmp != NULL) {
+          if (tmp->data.medicID == ID) return tmp;
+          tmp = tmp->next;
+        }
+        return NULL;
+      }
+
     wareHouse() {
       for (int i = 0; i < MAX_HASH_TABLE_SIZE; i++) {
         medicStorage[i] = NULL;
@@ -95,6 +98,9 @@ class wareHouse {
         
         cout << "Nhap gia thuoc: ";
         cin >> change.price;
+
+        cout << "Nhap don vi: ";
+        cin >> change.unit;
 
         cout << (_insert(change) ? "Nhap thuoc co ID " + change.medicID + " vao CSDL thanh cong.\n" :  "Nhap thuoc co ID " + change.medicID + " vao CSDL khong thanh cong.\n");
       }
@@ -115,7 +121,7 @@ class wareHouse {
 
         medicInfo change;
         int count = 0;
-        while (file >> change.medicID >> change.medicName >> change.price) {
+        while (file >> change.medicID >> change.medicName >> change.price >> change.unit) {
           cout << (_insert(change) ? "Nhap thuoc co ID " + change.medicID + " vao CSDL thanh cong.\n" :  "Nhap thuoc co ID " + change.medicID + " vao CSDL khong thanh cong.\n");
           count++;
         }
@@ -208,35 +214,36 @@ class wareHouse {
     }
 
     void printTable() {
-    cout << "--- DANH SACH THUOC TRONG KHO ---" << endl;
-    cout << "=================================" << endl;
-    
-    int total = 0;
-
-    for (int i = 0; i < MAX_HASH_TABLE_SIZE; i++) {
+      cout << "--- DANH SACH THUOC TRONG KHO ---" << endl;
+      cout << "=================================" << endl;
       
-      hashNode* temp = medicStorage[i];
+      int total = 0;
 
-      if (temp != nullptr) {
-        cout << "Bucket " << i << ":" << endl;
+      for (int i = 0; i < MAX_HASH_TABLE_SIZE; i++) {
+        
+        hashNode* temp = medicStorage[i];
 
-        while (temp != nullptr) {
-          cout << "  -> ID:    " << temp->data.medicID << endl;
-          cout << "     Ten:   " << temp->data.medicName << endl;
-          cout << "     Gia:   " << temp->data.price << endl;
-          cout << "     -----" << endl;
-          
-          total++;
-          temp = temp->next;
+        if (temp != nullptr) {
+          cout << "Bucket " << i << ":" << endl;
+
+          while (temp != nullptr) {
+            cout << "  -> ID:     " << temp->data.medicID << endl;
+            cout << "     Ten:    " << temp->data.medicName << endl;
+            cout << "     Gia:    " << temp->data.price << endl;
+            cout << "     Don vi: " << temp->data.unit << endl;
+            cout << "     -----" << endl;
+            
+            total++;
+            temp = temp->next;
+          }
         }
       }
-    }
 
-    cout << "========================================" << endl;
-    if (total == 0) {
-      cout << "Kho thuoc rong!" << endl;
-    } else {
-      cout << "Tong cong co: " << total << " loai thuoc." << endl;
+      cout << "========================================" << endl;
+      if (total == 0) {
+        cout << "Kho thuoc rong!" << endl;
+      } else {
+        cout << "Tong cong co: " << total << " loai thuoc." << endl;
+      }
     }
-  }
 };
