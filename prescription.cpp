@@ -13,7 +13,7 @@ void prescription::_add2List(prescriptionNode* data) {
     first = data;
   }
 
-  cout << "Them don thuoc co ID " << data->data.prescriptionID << " thanh cong.\n";
+  cout << "✅ Them don thuoc co ID " << data->data.prescriptionID << " thanh cong.\n";
 } 
 
 prescriptionNode* prescription::_find(std::string ID) {
@@ -29,7 +29,7 @@ prescriptionNode* prescription::_find(std::string ID) {
 
 void prescription::_printMedicList(prescriptionHeader& data) {
   if (data.header == NULL) {
-    cout << "(Don thuoc nay chua co thuoc)" << endl;
+    cout << "⚠️  (Don thuoc nay chua co thuoc)" << endl;
     cout << "=============================" << endl;
     return;
   }
@@ -39,11 +39,11 @@ void prescription::_printMedicList(prescriptionHeader& data) {
   int count = 1;
   float totalPrice = 0.0;
   while (tmp != NULL) {
-    cout << "  " << count << ". ID:       " << tmp->data.medicID << endl;
-    cout << "     Ten:      " << tmp->data.medicName << endl;
-    cout << "     Gia:      " << tmp->data.price << endl;
-    cout << "     So luong: " << tmp->data.total << endl;
-    cout << "     Don vi:   " << tmp->data.unit << endl;
+    cout << "  " << count << ". 🆔 ID:       " << tmp->data.medicID << endl;
+    cout << "     🏷️  Ten:      " << tmp->data.medicName << endl;
+    cout << "     💲 Gia:      " << tmp->data.price << endl;
+    cout << "     🔢 So luong: " << tmp->data.total << endl;
+    cout << "     📏 Don vi:   " << tmp->data.unit << endl;
     cout << "     -----" << endl;
   
     totalPrice += tmp->data.total * tmp->data.price;
@@ -52,7 +52,7 @@ void prescription::_printMedicList(prescriptionHeader& data) {
   }
 
   cout << "-----------------------------" << endl;
-  cout << "TONG TIEN: " << totalPrice << endl;
+  cout << "💰 TONG TIEN: " << totalPrice << endl;
   cout << "=============================" << endl;
 }
 
@@ -84,9 +84,9 @@ prescription::prescription(wareHouse& _wareHouse) : mainWareHouse(_wareHouse) {
 
 void prescription::newPrescription() {
   prescriptionNode* change = new prescriptionNode;
-  cout << "Nhap ID don thuoc: ";
+  cout << "🆔 Nhap ID don thuoc: ";
   getline(cin, change->data.prescriptionID);
-  cout << "Nhap ten benh nhan: ";
+  cout << "🧑‍⚕️ Nhap ten benh nhan: ";
   getline(cin, change->data.patientName);
 
   _add2List(change);
@@ -96,37 +96,37 @@ void prescription::printPrescription(std::string ID) {
   prescriptionNode* out;
   out = _find(ID);
   if (out == NULL) {
-    cout << "[Loi] Khong tim thay don thuoc co ID " << ID << endl;
+    cout << "❌ Khong tim thay don thuoc co ID " << ID << endl;
     return;
   }
-  cout << "\n--- THONG TIN DON THUOC ---" << endl;
+  cout << "\n--- 📝 THONG TIN DON THUOC ---" << endl;
   cout << "=============================" << endl;
-  cout << "ID Don thuoc: " << out->data.prescriptionID << endl;
-  cout << "Benh nhan:   " << out->data.patientName << endl;
-  cout << "--- Danh sach thuoc: ---" << endl;
+  cout << "🆔 ID Don thuoc: " << out->data.prescriptionID << endl;
+  cout << "🧑‍⚕️ Benh nhan:   " << out->data.patientName << endl;
+  cout << "--- 💊 Danh sach thuoc: ---" << endl;
   _printMedicList(out->data);
 }
 
 void prescription::addMedic2Prescription(std::string ID) {
   prescriptionNode* pres = _find(ID);
   if (pres == NULL) {
-    cout << "[Loi] Khong tim thay don thuoc " << ID << endl;
+    cout << "❌ Khong tim thay don thuoc " << ID << endl;
     return;
   }
   std::string _medicID;
-  cout << "Nhap ID thuoc can them vao don: ";
+  cout << "🆔 Nhap ID thuoc can them vao don: ";
   cin >> _medicID;
 
   hashNode* medicNode = mainWareHouse._find(_medicID);
   if (medicNode == NULL) {
-    cout << "[Loi] Kho khong co thuoc voi ID: " << _medicID << endl;
+    cout << "❌ Kho khong co thuoc voi ID: " << _medicID << endl;
     return;
   }
 
   medicInfo info = medicNode->data;
   int total;
-  cout << "Da tim thay: " << info.medicName << " (" << info.unit << ")" << endl;
-  cout << "Nhap so luong: ";
+  cout << "✅ Da tim thay: " << info.medicName << " (" << info.unit << ")" << endl;
+  cout << "🔢 Nhap so luong: ";
   cin >> total;
 
   prescriptionData* newMed = new prescriptionData;
@@ -139,55 +139,54 @@ void prescription::addMedic2Prescription(std::string ID) {
   newMed->next = pres->data.header;
   pres->data.header = newMed;
 
-  cout << "Da them " << total << " " << info.unit << " " << info.medicName << " vao don thuoc." << endl;
+  cout << "✨ Da them " << total << " " << info.unit << " " << info.medicName << " vao don thuoc." << endl;
 }
 
 bool prescription::removeMedic(std::string ID) {
   prescriptionNode* pres = _find(ID);
   if (pres == NULL) {
-      cout << "[Loi] Khong tim thay don thuoc " << ID << endl;
+      cout << "❌ Khong tim thay don thuoc " << ID << endl;
       return false;
   }
 
-  cout << "\n--- THONG TIN DON THUOC (Truoc khi xoa) ---" << endl;
-  cout << "ID Don thuoc: " << pres->data.prescriptionID << endl;
-  cout << "Benh nhan:   " << pres->data.patientName << endl;
-  cout << "--- Danh sach thuoc: ---" << endl;
+  cout << "\n--- ℹ️  THONG TIN DON THUOC (Truoc khi xoa) ---" << endl;
+  cout << "🆔 ID Don thuoc: " << pres->data.prescriptionID << endl;
+  cout << "🧑‍⚕️ Benh nhan:   " << pres->data.patientName << endl;
+  cout << "--- 💊 Danh sach thuoc: ---" << endl;
   _printMedicList(pres->data);
 
   if (pres->data.header == NULL) {
-    cout << "Don thuoc rong, khong co gi de xoa." << endl;
+    cout << "⚠️  Don thuoc rong, khong co gi de xoa." << endl;
     return false;
   }
 
   std::string delID;
-  cout << "Nhap ID thuoc can xoa: ";
+  cout << "🆔 Nhap ID thuoc can xoa: ";
   cin >> delID;
   if (_removeNode(pres->data, delID)) {
-    cout << "==> Da xoa thuoc co ID " << delID << " khoi don." << endl;
+    cout << "✅ ==> Da xoa thuoc co ID " << delID << " khoi don." << endl;
     return true;
   }
   else {
-    cout << "==> [Loi] Khong tim thay thuoc co ID " << delID << " trong don nay." << endl;
+    cout << "❌ ==> Khong tim thay thuoc co ID " << delID << " trong don nay." << endl;
     return false;
   }
 }
 
 void prescription::save2File() {
   std::string fileLocation;
-  cout << "Nhap dia chi file [./data/presData.txt]: ";
-  
+  cout << "📂 Nhap dia chi file [./data/presData.txt]: ";
   getline(cin, fileLocation);
 
   if (fileLocation == "") fileLocation = "data/presData.txt";
 
   std::ofstream file(fileLocation);
   if (!file.is_open()) {
-    cout << "[LOI] Khong mo duoc file!!\n";
+    cout << "❌ Khong mo duoc file!!\n";
     return;
   }
   
-  cout << "Bat dau luu..." << endl;
+  cout << "📤 Bat dau luu..." << endl;
   int presCount = 0;
   int medCount = 0;
 
@@ -211,12 +210,12 @@ void prescription::save2File() {
   }
   
   file.close();
-  cout << "Hoan tat! Da luu " << presCount << " don thuoc (" << medCount << " loai thuoc) vao file: ./" << fileLocation << endl;
+  cout << "🎉 Hoan tat! Da luu " << presCount << " don thuoc (" << medCount << " loai thuoc) vao file: ./" << fileLocation << endl;
 }
 
 void prescription::insertFromFile() {
   std::string fileLocation;
-  cout << "Nhap dia chi file de LOAD [./data/presData.txt]: ";
+  cout << "📂 Nhap dia chi file de LOAD [./data/presData.txt]: ";
 
 
   getline(cin, fileLocation);
@@ -225,11 +224,11 @@ void prescription::insertFromFile() {
 
   std::ifstream file(fileLocation);
   if (!file.is_open()) {
-    cout << "[LOI] Khong mo duoc file de LOAD: " << fileLocation << endl;
+    cout << "❌ Khong mo duoc file de LOAD: " << fileLocation << endl;
     return;
   }
 
-  cout << "Bat dau load du lieu tu file..." << endl;
+  cout << "📥 Bat dau load du lieu tu file..." << endl;
   int presCount = 0;
   int medCount = 0;
 
@@ -249,7 +248,7 @@ void prescription::insertFromFile() {
         hashNode* medicNode = mainWareHouse._find(medID);
           
         if (medicNode == NULL) {
-          cout << "  [Canh bao] Thuoc " << medID << " trong don " << presID << " khong con ton tai trong kho! Bo qua..." << endl;
+          cout << "  ⚠️ Thuoc " << medID << " trong don " << presID << " khong con ton tai trong kho! Bo qua..." << endl;
           continue;
         }
         medicInfo info = medicNode->data;
@@ -275,7 +274,7 @@ void prescription::insertFromFile() {
   }
       
   file.close();
-  cout << "Hoan tat! Da load " << presCount << " don thuoc (" << medCount << " loai thuoc) tu file: " << fileLocation << endl;
+  cout << "🎉 Hoan tat! Da load " << presCount << " don thuoc (" << medCount << " loai thuoc) tu file: " << fileLocation << endl;
 }
 
 void prescription::printAllPresHeader() {
@@ -286,7 +285,7 @@ void prescription::printAllPresHeader() {
     prescriptionNode* pres_node = first;
     
     if (pres_node == NULL) {
-        cout << "He thong chua co don thuoc nao." << endl;
+        cout << "⚠️  He thong chua co don thuoc nao." << endl;
         cout << "========================================" << endl;
         return;
     }
@@ -295,12 +294,12 @@ void prescription::printAllPresHeader() {
 
     while (pres_node != NULL) {
         presCount++;
-        cout << "  " << presCount << ". ID: " << pres_node->data.prescriptionID << endl;
-        cout << "     Benh nhan: " << pres_node->data.patientName << endl;
+        cout << "  " << presCount << ". 🆔 ID: " << pres_node->data.prescriptionID << endl;
+        cout << "     🧑‍⚕️ Benh nhan: " << pres_node->data.patientName << endl;
         cout << "     -----" << endl;
         pres_node = pres_node->next;
     }
     
     cout << "\n========================================" << endl;
-    cout << "Tong cong: " << presCount << " don thuoc trong he thong." << endl;
+    cout << "ℹ️  Tong cong: " << presCount << " don thuoc trong he thong." << endl;
 }
