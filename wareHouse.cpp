@@ -32,10 +32,10 @@ return true;
 }
 
 void wareHouse::_print(hashNode* value) {
-  cout << "ID thuoc: " << value->data.medicID << endl;
-  cout << "Ten thuoc: " << value->data.medicName << endl;
-  cout << "Gia thuoc: " << value->data.price << endl;
-  cout << "Don vi: " << value->data.unit << endl;
+  cout << "🆔 ID thuoc: " << value->data.medicID << endl;
+  cout << "🏷️  Ten thuoc: " << value->data.medicName << endl;
+  cout << "💲 Gia thuoc: " << value->data.price << endl;
+  cout << "📏 Don vi: " << value->data.unit << endl;
   return;
 }
 
@@ -62,55 +62,53 @@ wareHouse::wareHouse() {
 void wareHouse::insertMedic() {
     medicInfo change;
     
-    cout << "Nhap ID thuoc: ";
+    cout << "🆔 Nhap ID thuoc: ";
     cin >> change.medicID;
 
-    cout << "Nhap ten thuoc: ";
+    cout << "🏷️  Nhap ten thuoc: ";
     cin >> change.medicName;
     
-    cout << "Nhap gia thuoc: ";
+    cout << "💲 Nhap gia thuoc: ";
     cin >> change.price;
 
-    cout << "Nhap don vi: ";
+    cout << "📏 Nhap don vi: ";
     cin >> change.unit;
 
-    cout << (_insert(change) ? "Nhap thuoc co ID " + change.medicID + " vao CSDL thanh cong.\n" :  "Nhap thuoc co ID " + change.medicID + " vao CSDL khong thanh cong.\n");
+    cout << (_insert(change) ? "✅ Nhap thuoc co ID " + change.medicID + " vao CSDL thanh cong.\n" :  "❌ Nhap thuoc co ID " + change.medicID + " vao CSDL khong thanh cong.\n");
   }
 
 
 void wareHouse::insertMedicFromFile() {
     std::string fileLocation;
-    cout << "Nhap dia chi file [./data/whData.txt]: ";
-    cin.ignore();
+    cout << "📂 Nhap dia chi file [./data/whData.txt]: ";
     getline(cin, fileLocation);
     if (fileLocation == "") fileLocation = "data/whData.txt";
 
     std::ifstream file(fileLocation);
     if (!file.is_open()) {
-      cout << "[LOI] Khong mo duoc file!!\n";
+      cout << "❌ Khong mo duoc file!!\n";
       return;
     }
 
     medicInfo change;
     int count = 0;
     while (file >> change.medicID >> change.medicName >> change.price >> change.unit) {
-      cout << (_insert(change) ? "Nhap thuoc co ID " + change.medicID + " vao CSDL thanh cong.\n" :  "Nhap thuoc co ID " + change.medicID + " vao CSDL khong thanh cong.\n");
+      cout << (_insert(change) ? "  ✅ Nhap thuoc co ID " + change.medicID + " thanh cong.\n" :  "  ❌ Nhap thuoc co ID " + change.medicID + " khong thanh cong.\n");
       count++;
     }
     file.close();
-    cout << "Da them " << count << " loai thuoc tu file.\n";
+    cout << "🎉 Da them " << count << " loai thuoc tu file.\n";
 }
 
 void wareHouse::save2File() {
   std::string fileLocation;
-    cout << "Nhap dia chi file [./data/whData.txt]: ";
+    cout << "📂 Nhap dia chi file [./data/whData.txt]: ";
     getline(cin, fileLocation);
-    cin.ignore();
     if (fileLocation == "") fileLocation = "data/whData.txt";
 
     std::ofstream file(fileLocation);
     if (!file.is_open()) {
-      cout << "[LOI] Khong mo duoc file!!\n";
+      cout << "❌ Khong mo duoc file!!\n";
       return;
     }
 
@@ -125,7 +123,7 @@ void wareHouse::save2File() {
     }
 
     file.close();
-    cout << "Hoan tat! Da luu " << count << " loai thuoc vao file\n";
+    cout << "🎉 Hoan tat! Da luu " << count << " loai thuoc vao file\n";
 }
 
 bool wareHouse::delMedic(std::string ID) {
@@ -133,7 +131,7 @@ bool wareHouse::delMedic(std::string ID) {
   delNode = _find(ID);
 
   if (delNode == NULL) {
-    cout << "[LOI] Khong co thuoc co ID " << ID << " trong kho thuoc!!\n";
+    cout << "❌ Khong co thuoc co ID " << ID << " trong kho thuoc!!\n";
     return false;
   }
 
@@ -144,6 +142,7 @@ bool wareHouse::delMedic(std::string ID) {
   if (medicStorage[idx] == delNode) {
     medicStorage[idx] = delNode->next;
     delete delNode;
+    cout << "✅ ==> Da xoa thuoc co ID " << ID << " khoi don." << endl;
     return true;
   }
 
@@ -151,6 +150,7 @@ bool wareHouse::delMedic(std::string ID) {
     if (tmp->next == delNode) {
       tmp->next = delNode->next;
       delete delNode;
+    cout << "✅ ==> Da xoa thuoc co ID " << ID << " khoi don." << endl;
       return true;
     }
   tmp = tmp->next;
@@ -166,17 +166,17 @@ void wareHouse::findMedic(std::string ID) {
     _print(out);
     return;
   }
-  cout << "[LOI] Khong co thuoc co ID " << ID << " trong kho thuoc!!\n";
+  cout << "❌ Khong co thuoc co ID " << ID << " trong kho thuoc!!\n";
   return;
 }
 
 void wareHouse::updateMedic(std::string ID) {
   if (_find(ID) == NULL) {
-    cout << "[LOI] Khong co thuoc co ID " << ID << " trong kho thuoc!!\n";
+    cout << "❌ Khong co thuoc co ID " << ID << " trong kho thuoc!!\n";
     return;
   }
 
-  cout << "--- Thong tin thuoc truoc khi thay doi ---" << endl;
+  cout << "--- ℹ️  Thong tin thuoc truoc khi thay doi ---" << endl;
   cout << "==========================================" << endl;
   findMedic(ID);
   cout << "========================================" << endl;
@@ -186,7 +186,7 @@ void wareHouse::updateMedic(std::string ID) {
 }
 
 void wareHouse::printTable() {
-  cout << "--- DANH SACH THUOC TRONG KHO ---" << endl;
+  cout << "--- 📋 DANH SACH THUOC TRONG KHO ---" << endl;
   cout << "=================================" << endl;
   
   int total = 0;
@@ -196,13 +196,13 @@ void wareHouse::printTable() {
     hashNode* temp = medicStorage[i];
 
     if (temp != nullptr) {
-      cout << "Bucket " << i << ":" << endl;
+      cout << "🪣 Bucket " << i << ":" << endl;
 
       while (temp != nullptr) {
-        cout << "  -> ID:     " << temp->data.medicID << endl;
-        cout << "     Ten:    " << temp->data.medicName << endl;
-        cout << "     Gia:    " << temp->data.price << endl;
-        cout << "     Don vi: " << temp->data.unit << endl;
+        cout << "  -> 🆔 ID:     " << temp->data.medicID << endl;
+        cout << "     🏷️  Ten:    " << temp->data.medicName << endl;
+        cout << "     💲 Gia:    " << temp->data.price << endl;
+        cout << "     📏 Don vi: " << temp->data.unit << endl;
         cout << "     -----" << endl;
         
         total++;
@@ -213,8 +213,8 @@ void wareHouse::printTable() {
 
   cout << "========================================" << endl;
   if (total == 0) {
-    cout << "Kho thuoc rong!" << endl;
+    cout << "⚠️  Kho thuoc rong!" << endl;
   } else {
-    cout << "Tong cong co: " << total << " loai thuoc." << endl;
+    cout << "ℹ️  Tong cong co: " << total << " loai thuoc." << endl;
   }
 }
